@@ -1,0 +1,124 @@
+<svg
+  viewBox="-60 -10 1600 640"
+  class="keyboard-svg"
+  preserveAspectRatio="xMinYMid meet"
+>
+  <defs>
+    <marker
+      id="arrowhead-ccw"
+      markerWidth="10"
+      markerHeight="7"
+      refX="9"
+      refY="3.5"
+      orient="auto"
+    >
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" />
+    </marker>
+    <marker
+      id="arrowhead-cw"
+      markerWidth="10"
+      markerHeight="7"
+      refX="1"
+      refY="3.5"
+      orient="auto"
+    >
+      <polygon points="10 0, 0 3.5, 10 7" fill="#6b7280" />
+    </marker>
+  </defs>
+  @for (key of getFlattenedKeys(); track $index) {
+    @if (key && $index < keyPositions.length) {
+      @let parsed = getKeyParsed(key);
+      @let pos = keyPositions[$index];
+      @let x = pos[0];
+      @let y = pos[1];
+      @let rot = pos[2];
+      @let rotX = pos[3] || x + 45;
+      @let rotY = pos[4] || y + 45;
+      @let style = getStyle(parsed.type);
+      @let display = getKeyDisplay(parsed);
+      <g [attr.transform]="rot !== 0 ? 'rotate(' + rot + ' ' + rotX + ' ' + rotY + ')' : null">
+        <rect
+          [attr.x]="x"
+          [attr.y]="y"
+          width="90"
+          height="90"
+          rx="6"
+          [attr.fill]="style.bg"
+          [attr.stroke]="style.border"
+          stroke-width="2"
+        />
+        @if (parsed.sublabel && parsed.secondaryLabel) {
+          <text
+            [attr.x]="x + 45"
+            [attr.y]="y + (compact() ? 16 : 18)"
+            text-anchor="middle"
+            [attr.fill]="style.text"
+            [attr.font-size]="compact() ? 10 : 12"
+            font-weight="500"
+            opacity="0.8"
+          >{{ parsed.sublabel }}</text>
+          <text
+            [attr.x]="x + 45"
+            [attr.y]="y + 45"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            [attr.fill]="style.text"
+            [attr.font-size]="compact() ? 22 : 24"
+            font-weight="600"
+          >{{ parsed.label }}</text>
+          <text
+            [attr.x]="x + 45"
+            [attr.y]="y + 90 - (compact() ? 12 : 14)"
+            text-anchor="middle"
+            [attr.fill]="style.text"
+            [attr.font-size]="compact() ? 10 : 12"
+            font-weight="500"
+            opacity="0.8"
+          >{{ parsed.secondaryLabel }}</text>
+        } @else {
+          @if (parsed.sublabel && !compact()) {
+            <text
+              [attr.x]="x + 45"
+              [attr.y]="y + 20"
+              text-anchor="middle"
+              [attr.fill]="style.text"
+              font-size="14"
+              opacity="0.7"
+            >{{ parsed.sublabel }}</text>
+          }
+          @if (display.sub) {
+            <text
+              [attr.x]="x + 45"
+              [attr.y]="y + 45 - 6 + (parsed.sublabel && !compact() ? 4 : 0)"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              [attr.fill]="style.text"
+              [attr.font-size]="compact() ? (display.main.length > 3 ? 20 : 26) : (display.main.length > 4 ? 16 : 20)"
+              font-weight="500"
+            >{{ display.main }}</text>
+            <text
+              [attr.x]="x + 45"
+              [attr.y]="y + 45 + 14 + (parsed.sublabel && !compact() ? 4 : 0)"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              [attr.fill]="style.text"
+              [attr.font-size]="compact() ? 14 : 12"
+              font-weight="400"
+              opacity="0.8"
+            >{{ display.sub }}</text>
+          } @else {
+            <text
+              [attr.x]="x + 45"
+              [attr.y]="y + 45 + (parsed.sublabel && !compact() ? 8 : 4)"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              [attr.fill]="style.text"
+              [attr.font-size]="compact() ? (display.main.length > 3 ? 20 : 26) : (display.main.length > 4 ? 16 : 20)"
+              font-weight="500"
+            >{{ display.main }}</text>
+          }
+        }
+      </g>
+    }
+  }
+</svg>

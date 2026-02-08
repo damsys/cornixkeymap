@@ -1,0 +1,219 @@
+.app {
+  min-height: 100vh;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &.loaded {
+    padding-bottom: 2rem;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+
+  .meta {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .layout-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .layout-label {
+      font-size: 0.8125rem;
+      color: #6b7280;
+      margin-right: 0.25rem;
+    }
+  }
+
+  .btn-small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8125rem;
+    background: #f3f4f6;
+    color: #374151;
+
+    &:hover {
+      background: #e5e7eb;
+    }
+
+    &.active {
+      background: #111827;
+      color: #fff;
+    }
+  }
+}
+
+/* 印刷用: 画面上は非表示 */
+.print-only {
+  display: none;
+}
+
+/* 印刷時: 通常UIを隠し、全レイヤーを表示 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+    padding: 0;
+  }
+
+  .print-title {
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+    color: #111827;
+  }
+
+  .print-layer-page {
+    page-break-after: always;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      page-break-after: auto;
+    }
+  }
+
+  .print-layer-title {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+  }
+
+  .print-keyboard-wrap {
+    break-inside: avoid;
+  }
+}
+
+.dropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover,
+  &.drag-over {
+    border-color: #9ca3af;
+  }
+
+  &.drag-over {
+    background: #eff6ff;
+    border-color: #3b82f6;
+  }
+}
+
+.dropzone-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropzone-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.dropzone-text {
+  .dropzone-title {
+    font-weight: 500;
+    color: #374151;
+    margin: 0;
+  }
+
+  .dropzone-hint {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.25rem 0 0 0;
+  }
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &.btn-primary {
+    background: #111827;
+    color: #fff;
+
+    &:hover {
+      background: #374151;
+    }
+  }
+
+  &.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+
+    &:hover {
+      background: #e5e7eb;
+      color: #111827;
+    }
+  }
+}

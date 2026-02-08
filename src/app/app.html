@@ -1,0 +1,80 @@
+<div class="app">
+  <header class="header no-print">
+    <h1>{{ title() }}</h1>
+    <p class="subtitle">Vial .vil キーマップをアップロードして表示します（Cornix 等）</p>
+  </header>
+
+  @if (keymap(); as km) {
+    <div class="content loaded no-print">
+      <div class="toolbar">
+        <span class="meta">UID: {{ km.uid }} | Version: {{ km.version }} | レイヤー: {{ km.layers.length }}</span>
+        <div class="toolbar-actions">
+          <span class="layout-toggle">
+            <span class="layout-label">配列:</span>
+            <button
+              type="button"
+              class="btn btn-small"
+              [class.active]="layoutService.layout() === 'jis'"
+              (click)="layoutService.setLayout('jis')"
+            >JIS</button>
+            <button
+              type="button"
+              class="btn btn-small"
+              [class.active]="layoutService.layout() === 'us'"
+              (click)="layoutService.setLayout('us')"
+            >US</button>
+          </span>
+          <button type="button" class="btn btn-secondary" (click)="print()">印刷</button>
+          <button type="button" class="btn btn-secondary" (click)="clearKeymap()">別のファイルを選択</button>
+        </div>
+      </div>
+      <app-keymap-viewer [keymap]="km" />
+    </div>
+
+    <div class="print-only" aria-hidden="true">
+      <h1 class="print-title">キーマップ (UID: {{ km.uid }})</h1>
+      @for (layer of km.layers; track layer.index) {
+        <section class="print-layer-page">
+          <h2 class="print-layer-title">Layer {{ layer.index }}</h2>
+          <div class="print-keyboard-wrap">
+            <app-keyboard-svg [layer]="layer" [compact]="true" />
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div
+      class="dropzone"
+      [class.drag-over]="dragOver()"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave()"
+    >
+      <div class="dropzone-inner">
+        <div class="dropzone-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+        </div>
+        <div class="dropzone-text">
+          <p class="dropzone-title">.vil ファイルをドロップ</p>
+          <p class="dropzone-hint">または下のボタンから選択</p>
+        </div>
+        <label class="btn btn-primary">
+          ファイルを選択
+          <input
+            type="file"
+            accept=".vil"
+            (change)="onFileSelected($event)"
+            hidden
+          />
+        </label>
+      </div>
+      @if (error()) {
+        <div class="error-message">{{ error() }}</div>
+      }
+    </div>
+  }
+</div>
+
+<router-outlet />

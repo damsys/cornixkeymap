@@ -1,0 +1,132 @@
+.keymap-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.layer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #374151;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+
+  &.active {
+    background: #111827;
+    color: #fff;
+  }
+}
+
+.keyboard-wrap {
+  background: #fff;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.encoders-section,
+.section {
+  background: #fff;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.encoder-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.encoder-label {
+  font-weight: 500;
+  min-width: 4rem;
+}
+
+.encoder-ccw,
+.encoder-cw {
+  padding: 0.25rem 0.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
+}
+
+.macro-grid,
+.tapdance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.macro-card,
+.tapdance-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.macro-header,
+.tapdance-header {
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #6b7280;
+}
+
+.macro-header {
+  color: #7c3aed;
+}
+
+.tapdance-header {
+  color: #d97706;
+}
+
+.macro-actions,
+.tapdance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.macro-action,
+.tapdance-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.key-badge {
+  padding: 0.125rem 0.375rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+}

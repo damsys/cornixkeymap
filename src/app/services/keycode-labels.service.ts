@@ -109,7 +109,7 @@ const KEYCODE_MAP: Record<string, { label: string; sublabel?: string }> = {
   KC_LBRC: { label: '[', sublabel: '{' }, KC_RBRC: { label: ']', sublabel: '}' }, KC_BSLS: { label: '\\', sublabel: '|' },
   KC_SCLN: { label: ';', sublabel: ':' }, KC_QUOT: { label: "'", sublabel: '"' }, KC_GRV: { label: '`', sublabel: '~' },
   KC_COMM: { label: ',', sublabel: '<' }, KC_SLSH: { label: '/', sublabel: '?' },
-  KC_JYEN: { label: '¥', sublabel: '|' }, KC_LANG1: { label: 'かな' }, KC_LANG2: { label: '英数' },
+  KC_JYEN: { label: '¥', sublabel: '|' }, KC_LANG1: { label: 'LANG1' }, KC_LANG2: { label: 'LANG2' },
   KC_BTN1: { label: 'Mouse1' }, KC_BTN2: { label: 'Mouse2' }, KC_BTN3: { label: 'Mouse3' },
   QK_BOOT: { label: 'Boot' }, EE_CLR: { label: 'EE_CLR' },
 };
@@ -135,29 +135,29 @@ export class KeycodeLabelsService {
 
     let m: RegExpMatchArray | null;
     m = code.match(/^MO\((\d+)\)$/);
-    if (m) return { label: 'MO', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'MO', type: 'layer' };
     m = code.match(/^TG\((\d+)\)$/);
-    if (m) return { label: 'TG', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'TG', type: 'layer' };
     m = code.match(/^TO\((\d+)\)$/);
-    if (m) return { label: 'TO', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'TO', type: 'layer' };
     m = code.match(/^TT\((\d+)\)$/);
-    if (m) return { label: 'TT', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'TT', type: 'layer' };
     m = code.match(/^OSL\((\d+)\)$/);
-    if (m) return { label: 'OSL', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'OSL', type: 'layer' };
     m = code.match(/^DF\((\d+)\)$/);
-    if (m) return { label: 'DF', sublabel: m[1], type: 'layer' };
+    if (m) return { label: m[1], sublabel: 'DF', type: 'layer' };
 
     m = code.match(/^LT(\d+)\((.+)\)$/);
     if (m) {
       const inner = this.parseKeycode(m[2], layout);
-      return { label: `LT${m[1]}`, sublabel: inner.label, type: 'layer' };
+      return { label: inner.label, sublabel: `LT${m[1]}`, type: 'layer' };
     }
 
     m = code.match(/^TD\((\d+)\)$/) || code.match(/^TD(\d+)$/);
-    if (m) return { label: 'TD', sublabel: m[1], type: 'tapdance' };
+    if (m) return { label: m[1], sublabel: 'TD', type: 'tapdance' };
 
     m = code.match(/^M\((\d+)\)$/) || code.match(/^M(\d+)$/);
-    if (m) return { label: 'M', sublabel: m[1], type: 'macro' };
+    if (m) return { label: m[1], sublabel: 'M', type: 'macro' };
 
     m = code.match(/^USER(\d+)$/);
     if (m) {
@@ -175,9 +175,9 @@ export class KeycodeLabelsService {
       const mod = MOD_LABELS[m[1]] || m[1];
       const inner = this.parseKeycode(m[2], layout);
       if (inner.sublabel) {
-        return { label: inner.sublabel, sublabel: mod, secondaryLabel: inner.label, type: 'modifier' };
+        return { label: mod, sublabel: inner.sublabel, secondaryLabel: inner.label, type: 'modifier' };
       }
-      return { label: inner.label, sublabel: mod, type: 'modifier' };
+      return { label: mod, sublabel: inner.label, type: 'modifier' };
     }
 
     m = code.match(/^([A-Z_]+)\((.+)\)$/);
@@ -188,9 +188,9 @@ export class KeycodeLabelsService {
       }
       const inner = this.parseKeycode(m[2], layout);
       if (inner.sublabel) {
-        return { label: inner.sublabel, sublabel: modLabel || m[1], secondaryLabel: inner.label, type: 'modifier' };
+        return { label: modLabel || m[1], sublabel: inner.sublabel, secondaryLabel: inner.label, type: 'modifier' };
       }
-      return { label: inner.label, sublabel: modLabel || m[1], type: 'modifier' };
+      return { label: modLabel || m[1], sublabel: inner.label, type: 'modifier' };
     }
 
     if (MODIFIER_KEYS.includes(code)) {

@@ -227,14 +227,15 @@ export class KeycodeLabelsService {
     // Tap と Double Tap だけが設定されている場合、特別な表示を行う。
     // Tap と Hold が同一値の場合は Hold は設定されていないとみなす。
     const map = layout === 'jis' ? { ...KEYCODE_MAP, ...JIS_KEYCODE_OVERRIDES } : KEYCODE_MAP;
-    const tapEntry = map[tapDance.tap as keyof typeof map];
-    const doubleTapEntry = map[tapDance.doubleTap as keyof typeof map];
+    const tapKeyCode = this.parseKeycode(tapDance.tap, layout, tapDances);
+    const doubleTapKeyCode = this.parseKeycode(tapDance.doubleTap, layout, tapDances);
 
-    if (!tapEntry || !doubleTapEntry) {
+    if (tapKeyCode.type !== "normal" || doubleTapKeyCode.type !== "normal") {
+      // ややこしいキーコードはサポートしない。
       return defaultCode;
     }
 
-    return { label: `${tapEntry.label} ${doubleTapEntry.label}`, sublabel: `TD${code}`, type: 'tapdance' };
+    return { label: `${tapKeyCode.label} ${doubleTapKeyCode.label}`, sublabel: `TD${code}`, type: 'tapdance' };
   }
 
   isOnlyTapAndDoubleTap(tapDance: TapDanceEntry): boolean {

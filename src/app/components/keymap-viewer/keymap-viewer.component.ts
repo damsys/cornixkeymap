@@ -33,6 +33,10 @@ export class KeymapViewerComponent {
     this.activeLayerIndex.set(i);
   }
 
+  getKeycodeLabel(keycode: string): string {
+    return this.keycodeLabels.getKeycodeLabel(keycode, this.layoutService.layout());
+  }
+
   get hasEncoders() {
     return this.keymap().encoders.length > 0;
   }

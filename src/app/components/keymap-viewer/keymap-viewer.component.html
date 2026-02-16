@@ -22,8 +22,8 @@
       @for (enc of encodersForActiveLayer(); track enc.layer + '-' + enc.encoderIndex) {
         <div class="encoder-row">
           <span class="encoder-label">Enc {{ enc.encoderIndex }}</span>
-          <span class="encoder-ccw">↺ {{ keycodeLabels.getKeycodeLabel(enc.counterClockwise, layoutService.layout()) }}</span>
-          <span class="encoder-cw">↻ {{ keycodeLabels.getKeycodeLabel(enc.clockwise, layoutService.layout()) }}</span>
+          <span class="encoder-ccw">↺ {{ getKeycodeLabel(enc.counterClockwise) }}</span>
+          <span class="encoder-cw">↻ {{ getKeycodeLabel(enc.clockwise) }}</span>
         </div>
       }
     </div>
@@ -41,7 +41,7 @@
                 <span class="macro-action">
                   {{ action.type }}:
                   @for (k of action.keys; track k) {
-                    <span class="key-badge">{{ keycodeLabels.getKeycodeLabel(k, layoutService.layout()) }}</span>
+                    <span class="key-badge">{{ getKeycodeLabel(k) }}</span>
                   }
                 </span>
               }
@@ -61,16 +61,16 @@
             <div class="tapdance-header">TD{{ td.index }} ({{ td.tappingTerm }}ms)</div>
             <div class="tapdance-actions">
               @if (td.tap && td.tap !== 'KC_NO') {
-                <span class="tapdance-item">Tap: {{ keycodeLabels.getKeycodeLabel(td.tap, layoutService.layout()) }}</span>
+                <span class="tapdance-item">Tap: {{ getKeycodeLabel(td.tap) }}</span>
               }
               @if (td.hold && td.hold !== 'KC_NO') {
-                <span class="tapdance-item">Hold: {{ keycodeLabels.getKeycodeLabel(td.hold, layoutService.layout()) }}</span>
+                <span class="tapdance-item">Hold: {{ getKeycodeLabel(td.hold) }}</span>
               }
               @if (td.doubleTap && td.doubleTap !== 'KC_NO') {
-                <span class="tapdance-item">2Tap: {{ keycodeLabels.getKeycodeLabel(td.doubleTap, layoutService.layout()) }}</span>
+                <span class="tapdance-item">2Tap: {{ getKeycodeLabel(td.doubleTap) }}</span>
               }
               @if (td.tapHold && td.tapHold !== 'KC_NO') {
-                <span class="tapdance-item">Tap+Hold: {{ keycodeLabels.getKeycodeLabel(td.tapHold, layoutService.layout()) }}</span>
+                <span class="tapdance-item">Tap+Hold: {{ getKeycodeLabel(td.tapHold) }}</span>
               }
             </div>
           </div>

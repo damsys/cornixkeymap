@@ -96,14 +96,15 @@
   }
 
   .print-title {
-    font-size: 1.25rem;
-    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    margin: 0;
     color: #111827;
   }
 
   .print-layer-page {
-    page-break-after: always;
-    margin-bottom: 1.5rem;
+    /* 印刷時に途中で改ページが入らないようにする */
+    break-inside: avoid;
+    page-break-inside: avoid;
 
     &:last-child {
       page-break-after: auto;
@@ -112,7 +113,7 @@
 
   .print-layer-title {
     font-size: 1rem;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     color: #374151;
   }
 

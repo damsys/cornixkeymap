@@ -13,7 +13,7 @@
   </div>
 
   <div class="keyboard-wrap">
-    <app-keyboard-svg [layer]="activeLayer" [compact]="false" />
+    <app-keyboard-svg [layer]="activeLayer" [compact]="false" [keymap]="keymap()" />
   </div>
 
   @if (hasEncoders && encodersForActiveLayer().length > 0) {

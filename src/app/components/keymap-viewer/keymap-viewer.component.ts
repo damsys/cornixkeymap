@@ -34,7 +34,7 @@ export class KeymapViewerComponent {
   }
 
   getKeycodeLabel(keycode: string): string {
-    return this.keycodeLabels.getKeycodeLabel(keycode, this.layoutService.layout());
+    return this.keycodeLabels.getKeycodeLabel(keycode, this.layoutService.layout(), this.tapDances);
   }
 
   get hasEncoders() {

@@ -37,7 +37,7 @@
         <section class="print-layer-page">
           <h2 class="print-layer-title">Layer {{ layer.index }}</h2>
           <div class="print-keyboard-wrap">
-            <app-keyboard-svg [layer]="layer" [compact]="true" />
+            <app-keyboard-svg [layer]="layer" [compact]="true" [keymap]="km" />
           </div>
         </section>
       }

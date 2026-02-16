@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import type { KeyDataType } from '../models/keymap';
+import type { KeyDataType, TapDanceEntry } from '../models/keymap';
 
 export interface ParsedKeycode {
   label: string;
@@ -119,7 +119,7 @@ export class KeycodeLabelsService {
   /**
    * キーコード文字列をパースして表示用の label / sublabel / type を返す
    */
-  parseKeycode(code: string | number, layout: 'us' | 'jis' = 'jis'): ParsedKeycode {
+  parseKeycode(code: string | number, layout: 'us' | 'jis' = 'jis', tapDances: TapDanceEntry[] = []): ParsedKeycode {
     const map = layout === 'jis' ? { ...KEYCODE_MAP, ...JIS_KEYCODE_OVERRIDES } : KEYCODE_MAP;
     const shifted = layout === 'jis' ? JIS_SHIFTED : US_SHIFTED;
 
@@ -154,7 +154,9 @@ export class KeycodeLabelsService {
     }
 
     m = code.match(/^TD\((\d+)\)$/) || code.match(/^TD(\d+)$/);
-    if (m) return { label: m[1], sublabel: 'TD', type: 'tapdance' };
+    if (m) {
+      return this.getTapDanceLabel(m[1], layout, tapDances);
+    }
 
     m = code.match(/^M\((\d+)\)$/) || code.match(/^M(\d+)$/);
     if (m) return { label: m[1], sublabel: 'M', type: 'macro' };
@@ -205,11 +207,55 @@ export class KeycodeLabelsService {
     return { label: code.replace(/^KC_/, ''), type: 'normal' };
   }
 
-  getKeycodeLabel(code: string | number, layout: 'us' | 'jis' = 'jis'): string {
-    const p = this.parseKeycode(code, layout);
+  getKeycodeLabel(code: string | number, layout: 'us' | 'jis' = 'jis', tapDances: TapDanceEntry[] = []): string {
+    const p = this.parseKeycode(code, layout, tapDances);
     if (p.sublabel && (p.type === 'layer' || p.type === 'tapdance' || p.type === 'macro')) {
       return `${p.label}(${p.sublabel})`;
     }
     return p.label;
+  }
+
+  getTapDanceLabel(code: string, layout: 'us' | 'jis' = 'jis', tapDances: TapDanceEntry[]): ParsedKeycode {
+    const codeIndex = Number(code);
+    const tapDance = tapDances.find(td => td.index === codeIndex);
+    const defaultCode: ParsedKeycode = { label: code, sublabel: 'TD', type: 'tapdance' };
+
+    if (!tapDance || !this.isOnlyTapAndDoubleTap(tapDance)) {
+      return defaultCode;
+    }
+
+    // Tap と Double Tap だけが設定されている場合、特別な表示を行う。
+    // Tap と Hold が同一値の場合は Hold は設定されていないとみなす。
+    const map = layout === 'jis' ? { ...KEYCODE_MAP, ...JIS_KEYCODE_OVERRIDES } : KEYCODE_MAP;
+    const tapEntry = map[tapDance.tap as keyof typeof map];
+    const doubleTapEntry = map[tapDance.doubleTap as keyof typeof map];
+
+    if (!tapEntry || !doubleTapEntry) {
+      return defaultCode;
+    }
+
+    return { label: `${tapEntry.label} ${doubleTapEntry.label}`, sublabel: `TD${code}`, type: 'tapdance' };
+  }
+
+  isOnlyTapAndDoubleTap(tapDance: TapDanceEntry): boolean {
+    if (tapDance.tap === 'KC_NO' || tapDance.doubleTap === 'KC_NO') {
+      // tap / doubleTap が設定されていること。
+      return false;
+    }
+    if (tapDance.tap === tapDance.doubleTap) {
+      // tap / doubleTap が同一値の場合は対象外。
+      return false;
+    }
+    if (tapDance.hold !== 'KC_NO' && tapDance.hold !== tapDance.tap) {
+      // Hold が設定されている場合は対象外。
+      // Tap と同じ値の場合は「設定されていない」とみなす。
+      return false;
+    }
+    if (tapDance.tapHold !== 'KC_NO' && tapDance.tapHold !== tapDance.tap) {
+      // Tap+Hold が設定されている場合は対象外。
+      // Tap と同じ値の場合は「設定されていない」とみなす。
+      return false;
+    }
+    return true;
   }
 }

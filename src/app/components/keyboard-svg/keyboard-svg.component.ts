@@ -3,7 +3,7 @@ import { KEY_POSITIONS } from '../../constants/key-positions';
 import { KeycodeLabelsService } from '../../services/keycode-labels.service';
 import { LayoutService } from '../../services/layout.service';
 import type { ParsedKeycode } from '../../services/keycode-labels.service';
-import type { KeyDataType } from '../../models/keymap';
+import type { KeyDataType, ParsedKeymap } from '../../models/keymap';
 import type { ParsedLayer, KeyData } from '../../models/keymap';
 
 const KEY_STYLES: Record<string, { bg: string; border: string; text: string }> = {
@@ -67,6 +67,7 @@ function flattenLayerRows(layer: ParsedLayer): (KeyData | null)[] {
 export class KeyboardSvgComponent {
   layer = input.required<ParsedLayer>();
   compact = input<boolean>(false);
+  keymap = input.required<ParsedKeymap>();
 
   readonly keyPositions = KEY_POSITIONS;
   readonly keyStyles = KEY_STYLES;
@@ -82,7 +83,7 @@ export class KeyboardSvgComponent {
 
   /** 現在のレイアウトでキーコードをパース */
   getKeyParsed(key: KeyData): ParsedKeycode {
-    return this.keycodeLabels.parseKeycode(key.keycode, this.layoutService.layout());
+    return this.keycodeLabels.parseKeycode(key.keycode, this.layoutService.layout(), this.tapDances);
   }
 
   getStyle(type: KeyDataType) {
@@ -94,5 +95,9 @@ export class KeyboardSvgComponent {
     const match = label.match(/^([^(]+)\((.+)\)$/);
     if (match) return { main: match[1], sub: `(${match[2]})` };
     return { main: label };
+  }
+
+  get tapDances() {
+    return this.keymap().tapDance.filter(t => !t.isEmpty);
   }
 }

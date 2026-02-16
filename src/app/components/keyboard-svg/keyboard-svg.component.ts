@@ -16,6 +16,23 @@ const KEY_STYLES: Record<string, { bg: string; border: string; text: string }> =
   empty: { bg: '#f3f4f6', border: '#d1d5db', text: '#9ca3af' },
 };
 
+const expectedCols = [
+  // 左側
+  [
+    6,
+    6,
+    7,
+    6,
+  ],
+  // 右側
+  [
+    6,
+    7,
+    6,
+    6,
+  ],
+]
+
 /**
  * 1レイヤー分のキーを、Cornix と同じ順序でフラット化する。
  * 左ブロック rows 0-3、右ブロック rows 0-3。右は列逆順。
@@ -29,8 +46,8 @@ function flattenLayerRows(layer: ParsedLayer): (KeyData | null)[] {
   for (let r = 0; r < 4; r++) {
     const leftRow = leftRows[r];
     const rightRow = rightRows[r];
-    const leftLen = leftRow?.length ?? 6;
-    const rightLen = rightRow?.length ?? 6;
+    const leftLen = expectedCols[0][r];
+    const rightLen = expectedCols[1][r];
     for (let c = 0; c < leftLen; c++) {
       out.push(leftRow?.[c] ?? null);
     }
